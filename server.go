@@ -19,7 +19,7 @@ func helloworld(c echo.Context) error{
     u.Content = "は"
     u.Description = "ホモ"
 
-    db,err := gorm.Open("sqlite3","dev.sqlite3")
+    db,err := gorm.Open("sqlite3","./database/dev.sqlite3")
     if err != nil {
         panic(err.Error())
     }
