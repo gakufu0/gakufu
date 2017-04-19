@@ -20,12 +20,12 @@ type Music struct{
 type User struct{
     ID              uint64 `json:"id" gorm:"primary_key"`
     UserId          string `json:"user_id"`
-    AccountName     string `json:"music_name"`
+    AccountName     string `json:"account_name"`
     Follow          string `json:"follow"`
     Follower        string `json:"follower"`
-    Notification    []string `json:"notification"`
-    Favorited       []string `json:"favorited"`
-    History         []string `json:"history"`
+    Notification    string `json:"notification"`
+    Favorited       string `json:"favorited"`
+    History         string `json:"history"`
 }
 
 type CreatingMusic struct{
