@@ -1,32 +1,14 @@
 package main
 
 import (
-    "fmt"
-    "net/http"
+    _"fmt"
+    _"net/http"
     "github.com/labstack/echo"
     "github.com/jinzhu/gorm"
     _"github.com/mattn/go-sqlite3"
 )
 
 func main(){
-    e := echo.New()
-    e.GET("/",index)
-    e.GET("/hello",helloworld)
-    e.POST("/create",create_user)
-    e.POST("/:userid/delete",delete_user)
-    e.Logger.Fatal(e.Start(":1323"))
-}
-
-func index(c echo.Context) error{
-    return c.File( "./public/test.html" )
-}
-
-func create_user(c echo.Context) (err error){
-    u := new(User)
-    if err = c.Bind(u); err != nil {
-        return
-    }
-
     db,err := gorm.Open("sqlite3","./database/dev.sqlite3")
     if err != nil {
         panic(err.Error())
@@ -35,47 +17,41 @@ func create_user(c echo.Context) (err error){
 
     db.DB()
     db.AutoMigrate(&User{})
-    db.Create(&u)
-
-    oota := new(User)
-    db.First(&oota)
-    fmt.Println(oota)
-
-    return c.JSON(200, u)
-}
-
-func delete_user(c echo.Context) (err error){
-    user := c.Param("userid")
-    db,err := gorm.Open("sqlite3","./database/dev.sqlite3")
-    if err != nil {
-        panic(err.Error())
-    }
-    defer db.Close()
-
-    db.DB()
-    db.Where("user_id = ?",user).Find(&User{}).Delete(&User{})
-
-    return c.String(200,"ok")
-}
-
-func helloworld(c echo.Context) error{
-    u := new(Music)
-    u.MusicName = "くん"
-    u.Content = "は"
-    u.Description = "ホモ"
-
-    db,err := gorm.Open("sqlite3","./database/dev.sqlite3")
-    if err != nil {
-        panic(err.Error())
-    }
-    defer db.Close()
-    db.DB()
     db.AutoMigrate(&Music{})
-    db.Create(&u)
+    db.AutoMigrate(&CreatingMusic{})
 
-    oota := new(Music)
-    db.First(&oota)
-    fmt.Println(oota)
+    e := echo.New()
 
-    return c.JSON(http.StatusOK,u)
+    e.GET("/",func (c echo.Context) error{
+        return c.File("./public/test.html")
+    })
+
+    e.POST("/create",func (c echo.Context) error{
+        user := new(User)
+        c.Bind(user)
+        if user == nil {
+            return c.JSON(400, response{Message: "user data is null", Code: 400})
+        }
+
+        db.NewRecord(user)
+        db.Create(&user)
+        return c.JSON(200, response{Message: "user create successful", Code:200})
+    })
+
+    e.POST("/:userid/delete", func (c echo.Context) error{
+        user := new(User)
+
+        userid := c.Param("userid")
+        ret := db.Where("user_id = ?",userid).First(&user)
+        if ret.Error != nil {
+            return c.JSON(404, response{Message: "user not found", Code:404})
+        }
+
+        db.Delete(&user)
+
+        return c.JSON(200, response{Message: "OK", Code: 200})
+    })
+
+    e.Logger.Fatal(e.Start(":1323"))
 }
+
