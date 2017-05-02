@@ -6,9 +6,11 @@ import (
     "github.com/labstack/echo"
     "github.com/jinzhu/gorm"
     _"github.com/mattn/go-sqlite3"
+    "html/template"
 )
 
 func main(){
+
     db,err := gorm.Open("sqlite3","./database/dev.sqlite3")
     if err != nil {
         panic(err.Error())
@@ -21,6 +23,10 @@ func main(){
     db.AutoMigrate(&CreatingMusic{})
 
     e := echo.New()
+    t := &Template{
+        templates: template.Must(template.ParseGlob("public/*.html")),
+    }
+    e.Renderer = t
 
     e.GET("/",func (c echo.Context) error{
         return c.File("./public/test.html")
