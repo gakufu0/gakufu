@@ -20,6 +20,10 @@ func main(){
     db.DB()
     db.AutoMigrate(&User{})
     db.AutoMigrate(&Music{})
+    db.AutoMigrate(&Notice{})
+    db.AutoMigrate(&Follow{})
+    db.AutoMigrate(&Favorite{})
+    db.AutoMigrate(&History{})
     db.AutoMigrate(&CreatingMusic{})
 
     e := echo.New()
@@ -32,16 +36,60 @@ func main(){
         return c.File("./public/test.html")
     })
 
-    e.POST("/create",func (c echo.Context) error{
+    e.GET("/music/new",func (c echo.Context) error{
+        music := new(Music)
+        db.Limit(20).Find(&music)
+        return c.JSON(200,music)
+    })
+
+    e.GET("/:userid/notice", func (c echo.Context) error{
+        userid := c.Param("userid")
+
+        notice := new(Notice)
+        db.Where("user_id = ?",userid).Limit(20).Find(&notice)
+        return c.JSON(200, notice)
+    })
+
+    e.GET("/:userid/history", func (c echo.Context) error{
+        userid := c.Param("userid")
+
+        history := new(History)
+        db.Where("user_id = ?",userid).Limit(20).Find(&history)
+        return c.JSON(200, history)
+    })
+
+    e.POST("/:userid/music",func (c echo.Context) error{
+        music := new(Music)
+        c.Bind(music)
+        userid := c.Param("userid")
+        music.CreateUser = userid
+
+        if music.MusicId == "" || music.MusicName == "" || music.Content == ""{
+            return c.JSON(400, response{Message: "music data is not enough", Code:400})
+        }
+
+        db.NewRecord(music)
+        db.Create(&music)
+        return c.JSON(200, response{Message: "successful music create"})
+    })
+
+    e.POST("/createuser",func (c echo.Context) error{
         user := new(User)
         c.Bind(user)
+        //TODO 修正
         if user == nil {
             return c.JSON(400, response{Message: "user data is null", Code: 400})
         }
 
+        userDB := new(User)
+        db.Where("user_id = ?",user.UserId).First(&userDB)
+        if userDB.UserId != "" {
+            return c.JSON(400, response{Message: "user_id already used", Code: 400})
+        }
+
         db.NewRecord(user)
         db.Create(&user)
-        return c.JSON(200, response{Message: "user create successful", Code:200})
+        return c.JSON(200, response{Message: "successful user create", Code:200})
     })
 
     e.POST("/:userid/delete", func (c echo.Context) error{
@@ -54,10 +102,36 @@ func main(){
         }
 
         db.Delete(&user)
-
         return c.JSON(200, response{Message: "OK", Code: 200})
+    })
+
+    e.POST("/:userid/fav", func (c echo.Context) error{
+        fav := new(Favorite)
+        c.Bind(fav)
+
+        userid := c.Param("userid")
+        fav.UserId = userid
+
+        db.NewRecord(fav)
+        db.Create(&fav)
+        return c.JSON(200, response{Message: "successful favorite", Code:200})
+    })
+
+    e.POST("/:userid/history", func (c echo.Context) error{
+        history := new(History)
+        c.Bind(history)
+
+        if history.MusicId == "" || history.Unixtime == 0 {
+            return c.JSON(400, response{Message: "music data is not enough", Code:400})
+        }
+
+        userid := c.Param("userid")
+        history.UserId = userid
+
+        db.NewRecord(history)
+        db.Create(&history)
+        return c.JSON(200, response{Message: "successful favorite", Code:200})
     })
 
     e.Logger.Fatal(e.Start(":1323"))
 }
-

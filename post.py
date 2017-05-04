@@ -1,9 +1,9 @@
 import requests
 
-url = "http://localhost:1323/test/delete"
+url = "http://localhost:1323/create"
 
 data = {
-    "UserId" : "test",
+    "UserId" : "ueken",
     "AccountName" : "test",
     "Contet" : "aaaa"
 }
