@@ -50,6 +50,14 @@ func main(){
         return c.JSON(200, notice)
     })
 
+    e.GET("/:userid/fav", func (c echo.Context) error{
+        userid := c.Param("userid")
+
+        fav := new(Favoritel)
+        db.Where("user_id = ?",userid).Limit(20).Find(&fav)
+        return c.JSON(200,fav)
+    }
+
     e.GET("/:userid/history", func (c echo.Context) error{
         userid := c.Param("userid")
 
@@ -72,6 +80,39 @@ func main(){
         db.Create(&music)
         return c.JSON(200, response{Message: "successful music create"})
     })
+
+    e.POST("/:userid/CreatingMusic", func (c echo.Context) error{
+        music := new(CreatingMusic)
+        c.Bind(music)
+        userid := c.Param("userid")
+        music.CreateUser = userid
+
+        if music.MusicId == "" || music.MusicName == "" || music.Content == ""{
+            return c.JSON(400, response{Message: "music data is not enough", Code:400})
+        }
+
+        db.NewRecord(music)
+        db.Create(&music)
+        return c.JSON(200, response{Message: "successful music create"})
+    })
+
+    e.POST("/:userid/music/delete/:musicid", func (c echo.Context) error
+        musicid := c.Param("musicid")
+        userid  := c.Param("userid")
+
+        music := new(Music)
+        ret := db.Where("music_id = ?",musicid).First(&music)
+        if ret.Error := nil {
+            return c.JSON(404, response{Message: "user not found", Code:404})
+        }
+
+        if music.CreateUser != userid {
+            return c.JSON(400, response{Message: "not you created"})
+        }
+
+        db.Delete(&music)
+        return c.JSON(200, response{Message: "OK", Code: 200})
+    )
 
     e.POST("/createuser",func (c echo.Context) error{
         user := new(User)

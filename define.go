@@ -21,6 +21,16 @@ type Music struct{
     Views           uint64      `json:"views"`
 }
 
+type CreatingMusic struct{
+    ID              uint64 `json:"id" gorm:"primary_key`
+    MusicId         string `json:"music_id"`
+    MusicName       string `json:"music_name"`
+    Content         string `json:"content"`
+    Description     string `json:"description"`
+    CreateUser      string `json:"create_user"`
+    Tags            string `json:"tags"`
+}
+
 type User struct{
     ID              uint64 `json:"id" gorm:"primary_key"`
     UserId          string `json:"user_id"`
@@ -52,16 +62,6 @@ type History struct{
     MusicId         string  `json:"music_id"`
     UserId          string  `json:"user_id"`
 	Unixtime        uint    `json:"unixtime" default:0`
-}
-
-type CreatingMusic struct{
-    ID              uint64 `json:"id" gorm:"primary_key`
-    MusicId         string `json:"music_id"`
-    MusicName       string `json:"music_name"`
-    Content         string `json:"content"`
-    Description     string `json:"description"`
-    CreateUser      string `json:"create_user"`
-    Tags            string `json:"tags"`
 }
 
 type response struct {
