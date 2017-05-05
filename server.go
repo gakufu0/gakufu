@@ -27,13 +27,14 @@ func main(){
     db.AutoMigrate(&CreatingMusic{})
 
     e := echo.New()
+    e.Static("/", "assets")
     t := &Template{
         templates: template.Must(template.ParseGlob("public/*.html")),
     }
     e.Renderer = t
 
     e.GET("/",func (c echo.Context) error{
-        return c.File("./public/test.html")
+        return c.File("./public/index.html")
     })
 
     e.GET("/music/new",func (c echo.Context) error{
@@ -53,10 +54,10 @@ func main(){
     e.GET("/:userid/fav", func (c echo.Context) error{
         userid := c.Param("userid")
 
-        fav := new(Favoritel)
+        fav := new(Favorite)
         db.Where("user_id = ?",userid).Limit(20).Find(&fav)
         return c.JSON(200,fav)
-    }
+    })
 
     e.GET("/:userid/history", func (c echo.Context) error{
         userid := c.Param("userid")
@@ -96,13 +97,13 @@ func main(){
         return c.JSON(200, response{Message: "successful music create"})
     })
 
-    e.POST("/:userid/music/delete/:musicid", func (c echo.Context) error
+    e.POST("/:userid/music/delete/:musicid", func (c echo.Context) error{
         musicid := c.Param("musicid")
         userid  := c.Param("userid")
 
         music := new(Music)
         ret := db.Where("music_id = ?",musicid).First(&music)
-        if ret.Error := nil {
+        if ret.Error == nil {
             return c.JSON(404, response{Message: "user not found", Code:404})
         }
 
@@ -112,7 +113,7 @@ func main(){
 
         db.Delete(&music)
         return c.JSON(200, response{Message: "OK", Code: 200})
-    )
+    })
 
     e.POST("/createuser",func (c echo.Context) error{
         user := new(User)
