@@ -1,7 +1,7 @@
 package main
 
 import (
-    _"fmt"
+    "fmt"
     _"net/http"
     "github.com/labstack/echo"
     "github.com/jinzhu/gorm"
@@ -16,6 +16,9 @@ func main(){
         panic(err.Error())
     }
     defer db.Close()
+
+    db.SingularTable(true)
+    db.LogMode(true)
 
     db.DB()
     db.AutoMigrate(&User{})
@@ -40,6 +43,7 @@ func main(){
     e.GET("/music/new",func (c echo.Context) error{
         music := new(Music)
         db.Limit(20).Find(&music)
+        fmt.Printf("%v",music)
         return c.JSON(200,music)
     })
 
@@ -72,14 +76,14 @@ func main(){
         c.Bind(music)
         userid := c.Param("userid")
         music.CreateUser = userid
-
+        /*
         if music.MusicId == "" || music.MusicName == "" || music.Content == ""{
             return c.JSON(400, response{Message: "music data is not enough", Code:400})
         }
-
+        */
         db.NewRecord(music)
         db.Create(&music)
-        return c.JSON(200, response{Message: "successful music create"})
+        return c.JSON(200, response{Message: "successful music create",Code:200})
     })
 
     e.POST("/:userid/CreatingMusic", func (c echo.Context) error{
@@ -94,7 +98,7 @@ func main(){
 
         db.NewRecord(music)
         db.Create(&music)
-        return c.JSON(200, response{Message: "successful music create"})
+        return c.JSON(200, response{Message: "successful music create", Code:200})
     })
 
     e.POST("/:userid/music/delete/:musicid", func (c echo.Context) error{
@@ -108,7 +112,7 @@ func main(){
         }
 
         if music.CreateUser != userid {
-            return c.JSON(400, response{Message: "not you created"})
+            return c.JSON(400, response{Message: "not you created",Code:200})
         }
 
         db.Delete(&music)
