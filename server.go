@@ -41,7 +41,7 @@ func main(){
     })
 
     e.GET("/music/new",func (c echo.Context) error{
-        music := new(Music)
+        var music []Music
         db.Limit(20).Find(&music)
         fmt.Printf("%v",music)
         return c.JSON(200,music)
@@ -76,11 +76,9 @@ func main(){
         c.Bind(music)
         userid := c.Param("userid")
         music.CreateUser = userid
-        /*
         if music.MusicId == "" || music.MusicName == "" || music.Content == ""{
             return c.JSON(400, response{Message: "music data is not enough", Code:400})
         }
-        */
         db.NewRecord(music)
         db.Create(&music)
         return c.JSON(200, response{Message: "successful music create",Code:200})
