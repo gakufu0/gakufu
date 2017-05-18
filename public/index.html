@@ -1,17 +1,29 @@
 <head>
     <link rel="stylesheet" type="text/css" href="/css/custom.css">
-    <script src="javascript/vue.js"></script>
     <script src="javascript/sub.js"></script>
+    <script src="javascript/vue.js"></script>
     <script src="javascript/index.js"></script>
 
     <title>楽譜箱</title>
-    <section class="title">楽譜箱</section>
+    <section id="title">楽譜箱</section>
 </head>
 
 <body>
-    <section class="left">
+    <section id="left">
         <img class="col-md-12" src="/picture/aaa.jpeg" height="50" onclick="testes()">
     </section>
-    <section class="bottom">
+
+    <section id="MainContents">
+        <div v-for="(music,num) in musics">
+            <div class="contents">
+            {{music.id}}
+            </div>
+        </div>
     </section>
+
+    <section id="bottom">
+    </section>
+
 </body>
+
+
