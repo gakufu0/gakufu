@@ -14,7 +14,6 @@ window.onload = function () {
                 self.musics = xhr.response;
             }
             xhr.send();
-            test();
         },
         methods:{
         }
