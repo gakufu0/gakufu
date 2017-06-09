@@ -1,42 +1,78 @@
 <head>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <script src="javascript/bootstrap-native.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/custom.css">
     <script src="javascript/sub.js"></script>
     <script src="javascript/index.js"></script>
 
     <title>楽譜箱</title>
-    <section  id="top" class="wd-10">
+    <section  id="top">
         <img src="/picture/image1.JPG">
-        <img src="/picture/image2.JPG" class="wd-2">
+        <img src="/picture/image2.JPG">
     </section>
 </head>
 
 <body>
-    <div class="wd-10">
-        <section id="left" class="wd-2">
-            <section id="left-top" class="wd-10">
-                <img src="/picture/aaa.jpeg" class="wd-2">
+    <div class="row">
+        <section id="left" class="col-md-2 col-sd-2">
+            <section id="left-top">
+                <img src="/picture/aaa.jpeg" class="col-md-2 col-sd-2">
                 <div>向野　君春<br/><br/><br/></div>
             </section>
 
-            <section id="left-bottom" class="wd-10">
-                <div class="link wd-10" href="#">ホーム</div>
-                <div class="link wd-10" href="#">急上昇</div>
-                <div class="link wd-10" href="#">登録チャンネル</div>
-                <div class="link wd-10" href="#">履歴</div>
+            <section id="left-bottom">
+                <div class="link" href="#">ホーム</div>
+                <div class="link" href="#">急上昇</div>
+                <div class="link" href="#">登録チャンネル</div>
+                <div class="link" href="#">履歴</div>
             </section>
         </section>
-        <section id="MainContents" class="wd-8">
-            <section id="searchBox" class="wd-5">
-                <input type="text"class="wd-8">
-                <button class="btn button-default">検索</button>
-            </section>
-            <section>
-                <div v-for="(music,num) in musics">
-                    <div class="contents wd-2">
-                    {{music.id}}
+        <section id="MainContents" class="col-md-10 col-sd-10">
+            <div class="row">
+                <section id="messageBox" class="col-md-8 col-sd-8 col-md-offset-1 col-md-offset-1">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>aaa</th>
+                          <th>おしらせ</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>test</td>
+                          <td>test</td>
+                        </tr>
+                        <tr>
+                          <td>test</td>
+                          <td>test</td>
+                        </tr>
+                        <tr>
+                          <td>test</td>
+                          <td>test</td>
+                        </tr>
+                        <tr>
+                          <td>test</td>
+                          <td>test</td>
+                        </tr>
+                        <tr>
+                          <td>test</td>
+                          <td>test</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </section>
+                <section id="searchBox">
+                    <input type="text"class="col-md-3 col-sd-3 col-md-offset-8 col-md-offset-8">
+                    <button class="btn button-default col-md-1 col-md-1">検索</button>
+                </section>
+                <section>
+                    <div v-for="(music,num) in musics">
+                        <div class="contents col-md-3 col-sd-3">
+                        {{music.id}}
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </div>
         </section>
 
         <section id="bottom">
