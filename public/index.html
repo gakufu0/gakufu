@@ -2,6 +2,7 @@
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
     <script src="javascript/bootstrap-native.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <script src="javascript/vue.js"></script>
     <script src="javascript/sub.js"></script>
     <script src="javascript/index.js"></script>
 
@@ -15,50 +16,29 @@
 <body>
     <div class="row">
         <section id="left" class="col-md-2 col-sd-2">
-            <section id="left-top">
-                <img src="/picture/aaa.jpeg" class="col-md-2 col-sd-2">
-                <div>向野　君春<br/><br/><br/></div>
-            </section>
+            <div class="row">
+                <section id="left-top">
+                    <img src="/picture/aaa.jpeg" class="col-md-4 col-sd-4">
+                    <div>向野　君春<br/><br/><br/></div>
+                </section>
 
-            <section id="left-bottom">
-                <div class="link" href="#">ホーム</div>
-                <div class="link" href="#">急上昇</div>
-                <div class="link" href="#">登録チャンネル</div>
-                <div class="link" href="#">履歴</div>
-            </section>
+                <section id="left-bottom">
+                    <div class="link" href="#">ホーム</div>
+                    <div class="link" href="#">急上昇</div>
+                    <div class="link" href="#">登録チャンネル</div>
+                    <div class="link" href="#">履歴</div>
+                </section>
+            </div>
         </section>
         <section id="MainContents" class="col-md-10 col-sd-10">
             <div class="row">
+                <div v-for="item in items">{{item}}</div>
                 <section id="messageBox" class="col-md-8 col-sd-8 col-md-offset-1 col-md-offset-1">
                     <table class="table">
-                      <thead>
-                        <tr>
-                          <th>aaa</th>
-                          <th>おしらせ</th>
-                        </tr>
-                      </thead>
                       <tbody>
-                        <tr>
-                          <td>test</td>
-                          <td>test</td>
-                        </tr>
-                        <tr>
-                          <td>test</td>
-                          <td>test</td>
-                        </tr>
-                        <tr>
-                          <td>test</td>
-                          <td>test</td>
-                        </tr>
-                        <tr>
-                          <td>test</td>
-                          <td>test</td>
-                        </tr>
-                        <tr>
-                          <td>test</td>
-                          <td>test</td>
-                        </tr>
-                      </tbody>
+                          <tr>
+                          </tr>
+                        </tbody>
                     </table>
                 </section>
                 <section id="searchBox">
@@ -80,5 +60,3 @@
     </div>
 
 </body>
-
-<script src="javascript/vue.js"></script>
