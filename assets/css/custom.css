@@ -1,52 +1,100 @@
 #top {
   height: 15%;
-  padding: 10px; }
-  #top img {
-    margin-bottom: 10px;
-    height: 100%; }
+  padding: 10px;
+}
+#top img {
+  margin-bottom: 10px;
+  height: 100%;
+}
 
 #left {
   float: left;
-  padding: 10px; }
+  padding: 10px;
+}
 
 #left-top {
   color: red;
   font-size: 20px;
   border-bottom: 1px solid gray;
-  padding-bottom: 10px; }
-  #left-top img {
-    float: left;
-    margin-right: 1%; }
+  padding-bottom: 10px;
+}
+#left-top img {
+  float: left;
+  margin-right: 1%;
+}
 
 #left-bottom {
-  padding: 10px; }
-  #left-bottom .link {
-    padding: 3px;
-    border: 1px solid gray;
-    text-align: center; }
-    #left-bottom .link:hover {
-      background-color: gray; }
+  padding: 10px;
+}
+#left-bottom .link {
+  padding: 3px;
+  border: 1px solid gray;
+  text-align: center;
+}
+#left-bottom .link:hover {
+  background-color: gray;
+}
 
 #bottom {
-  border-top: 1px solid gray; }
-
-#MainContents {
-  float: right;
-  border-left: 1px solid gray; }
-  #MainContents .contents {
-    border: 1px red solid;
-    border-top-width: 3px;
-    float: left;
-    margin: 10px;
-    height: 10%; }
-
-#searchBox {
-  margin-top: 10px;
-  margin-left: auto; }
+  border-top: 1px solid gray;
+}
 
 #messageBox {
   margin-top: 10px;
   height: 20%;
-  overflow: scroll; }
+  overflow: scroll;
+  border-top: 10px solid gray;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  border-bottom: 1px solid gray;
+}
+
+#searchBox {
+  margin-top: 10px;
+  margin-left: auto;
+}
+
+#tab {
+  border-bottom: 1px solid black;
+}
+#tab .active {
+  background-color: black;
+}
+#tab .active .tab-link {
+  color: red;
+}
+
+.tab-item {
+  border-top: 1px solid gray;
+  border-left: 1px solid white;
+  border-right: 1px solid white;
+  border-radius: 8px 8px 0 0;
+  background-color: gray;
+  text-align: center;
+  padding: 8px 0 8px 0;
+}
+.tab-item:hover {
+  background-color: black;
+}
+.tab-item:hover .tab-link {
+  color: red;
+}
+
+.tab-link {
+  color: white;
+}
+
+#MainContents {
+  float: right;
+  border-left: 1px solid gray;
+}
+#MainContents .contents {
+  border: 1px red solid;
+  border-top-width: 10px;
+  border-radius: 5px;
+  float: left;
+  margin: 10px;
+  height: 10%;
+}
 
 /*# sourceMappingURL=custom.css.map */

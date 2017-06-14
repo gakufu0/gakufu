@@ -4,7 +4,7 @@
     img{
         margin-bottom:10px;
         height:100%;
-    }    
+    }
 }
 
 #left{
@@ -15,11 +15,11 @@
 #left-top{
     color:red;
     img{
-        float:left;    
+        float:left;
         margin-right:1%;
     }
     font:{
-        size:20px;    
+        size:20px;
     }
     border-bottom:1px solid gray;
     padding-bottom:10px;
@@ -40,8 +40,61 @@
 #bottom{
     border:{
         top:1px solid gray;
-    }    
+    }
 }
+
+#messageBox{
+    margin-top:10px;
+    height:20%;
+    overflow:scroll;
+
+    border:{
+        top:10px solid gray;
+        left:1px solid gray;
+        right:1px solid gray;
+        bottom:1px solid gray;
+    }
+}
+
+#searchBox{
+    margin-top:10px;
+    margin-left:auto;
+}
+
+#tab{
+    border:{
+        bottom:1px solid black;
+    }
+    .active{
+        background-color:black;    
+        .tab-link{
+            color:red;    
+        }
+    }
+}
+
+.tab-item{
+    &:hover{
+        background-color:black;    
+        .tab-link{
+            color:red;    
+        }
+    }
+    border:{
+        top:1px solid gray;
+        left:1px solid white;
+        right:1px solid white;
+        radius:8px 8px 0 0;
+    }
+    background-color:gray;
+    text-align:center;
+    padding:8px 0 8px 0;
+}
+
+.tab-link{
+    color:white;
+}
+
 
 #MainContents{
     float:right;
@@ -50,22 +103,12 @@
     }
     .contents{
         border:1px red solid;
-        border-top-width:3px;
+        border-top-width:10px;
+        border-radius:5px;
         float:left;
         margin:10px;
         height:10%;
     }
 
-}
-
-#searchBox{
-    margin-top:10px;
-    margin-left:auto;
-}
-
-#messageBox{
-    margin-top:10px;
-    height:20%;
-    overflow:scroll;
 }
 

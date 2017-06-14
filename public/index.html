@@ -32,19 +32,41 @@
         </section>
         <section id="MainContents" class="col-md-10 col-sd-10">
             <div class="row">
-                <div v-for="item in items">{{item}}</div>
+
                 <section id="messageBox" class="col-md-8 col-sd-8 col-md-offset-1 col-md-offset-1">
                     <table class="table">
                       <tbody>
-                          <tr>
+                          <tr v-for="message in musics">
+                            <td>
+                              <div>{{message.id}}</div>
+                            </td>
                           </tr>
-                        </tbody>
+                      </tbody>
                     </table>
                 </section>
+
+                <div class="col-md-12 col-sd-12"><!--余白--><div>
+
                 <section id="searchBox">
                     <input type="text"class="col-md-3 col-sd-3 col-md-offset-8 col-md-offset-8">
                     <button class="btn button-default col-md-1 col-md-1">検索</button>
                 </section>
+
+                <section id="tab" class="col-md-12 col-sd-12">
+                    <div class="tab-item col-md-1 col-sd-1">
+                      <div class="tab-link">タブ1</div>
+                    </div>
+                    <div class="tab-item col-md-1 col-sd-1">
+                      <div class="tab-link">タブ2</div>
+                    </div>
+                    <div class="tab-item col-md-1 col-sd-1">
+                      <div class="tab-link">タブ3</div>
+                    </div>
+                    <div class="tab-item col-md-1 col-sd-1">
+                      <div class="tab-link">タブ4</div>
+                    </div>
+                </section>
+
                 <section>
                     <div v-for="(music,num) in musics">
                         <div class="contents col-md-3 col-sd-3">
