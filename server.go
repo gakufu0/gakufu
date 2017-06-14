@@ -6,7 +6,7 @@ import (
     "github.com/labstack/echo"
     "github.com/jinzhu/gorm"
     _"github.com/mattn/go-sqlite3"
-    "html/template"
+    _"html/template"
 )
 
 func main(){
@@ -31,10 +31,6 @@ func main(){
 
     e := echo.New()
     e.Static("/", "assets")
-    t := &Template{
-        templates: template.Must(template.ParseGlob("public/*.html")),
-    }
-    e.Renderer = t
 
     e.GET("/",func (c echo.Context) error{
         return c.File("./public/index.html")
