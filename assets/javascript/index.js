@@ -2,7 +2,11 @@ window.onload = function () {
     var mainContents = new Vue({
         el:'#MainContents',    
         data:{
-            musics:[]
+            musics:[],
+            items:[
+                { message: 'Foo' },
+                { message: 'Bar' }
+            ]
         },
         beforeCreate:function(){
             self = this;
