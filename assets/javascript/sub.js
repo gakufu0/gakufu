@@ -1,27 +1,15 @@
-function test(){
-    var xhr=new XMLHttpRequest();
-    xhr.open("POST","http://localhost:1323/aaaa123/music");
-    xhr.setRequestHeader('Content-Type', 'application/json' );
-    var data = {
-        music_id : "test2",
-        music_name : "testttaaa",
-        content : "faillllf"
-    } 
-    xhr.onload=function(){console.log(xhr.response);}
-    xhr.send(JSON.stringify(data));
-}
+function buildXHR(method, type=null ,header = null, url, sendData = null, onloadFunc){
+    var xhr= new XMLHttpRequest();
+    xhr.open(method ,url);
+    for(k in header)
+        xhr.setRequestHeader(k,header[k]);
 
-function test2(){
-    var xhr=new XMLHttpRequest();
-    xhr.open("GET","http://localhost:1323/music/new");
-    xhr.setRequestHeader( 'Content-Type', 'application/json' );
-    xhr.onload=function(){console.log(xhr.response);}
-    xhr.send();
-}
+    if(type != null)
+        xhr.responseType= type;
+    xhr.setRequestHeader('Pragma', 'no-cache');
+    xhr.setRequestHeader('Cache-Control', 'no-cache');
+    xhr.send(sendData);
+    xhr.onload = onloadFunc;
 
-function buildXMLJson(type,url,data,loaded){
-    var xhr=new XMLHttpRequest();
-    xhr.open(type,url);
-    xhr.setRequestHeader( 'Content-Type', 'application/json' );
-    xhr.send();
+    return xhr;
 }
