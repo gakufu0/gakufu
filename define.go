@@ -13,7 +13,7 @@ type Music struct{
     ID              uint64      `json:"id" gorm:"primary_key`
     MusicId         string      `json:"music_id"`
     MusicName       string      `json:"music_name"`
-    Content         string      `json:"content"`
+    Content         string      `gorm"size:256"`
     Description     string      `json:"description"`
     CreatedAt       time.Time   `json:"createdAt"`
     CreateUser      string      `json:"create_user"`

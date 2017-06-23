@@ -7,7 +7,43 @@ import (
     "github.com/jinzhu/gorm"
     _"github.com/mattn/go-sqlite3"
     _"html/template"
+    "os"
+    "io"
+    logrus "github.com/Sirupsen/logrus"
 )
+
+func saveFile(path string, c echo.Context) error {
+    logrus.Warn(c)
+    file, err := c.FormFile("file")
+    if err != nil {
+        logrus.Warn("a")
+        return err
+    }
+
+    src, err := file.Open()
+    if err != nil {
+        logrus.Warn("b")
+        return err
+    }
+    defer src.Close()
+
+    if string(path[len(path)-1]) == string("/") {
+        path += file.Filename
+    }
+
+    dst, err := os.Create(path)
+    if err != nil {
+        logrus.Warn("c")
+        return err
+    }
+    defer dst.Close()
+
+    if _, err = io.Copy(dst, src); err != nil {
+        logrus.Warn("d")
+        return err
+    }
+    return nil
+}
 
 func main(){
 
@@ -69,12 +105,27 @@ func main(){
 
     e.POST("/:userid/music",func (c echo.Context) error{
         music := new(Music)
-        c.Bind(music)
+
+        music.MusicId = c.FormValue("music_id")
+        music.MusicName = c.FormValue("music_name")
+
         userid := c.Param("userid")
         music.CreateUser = userid
-        if music.MusicId == "" || music.MusicName == "" || music.Content == ""{
+
+        logrus.Warn(c)
+
+        p,_ := os.Getwd()
+        err := saveFile(p+"/assets/music/picture/"+music.MusicName,c)
+        if err != nil {
+            return c.JSON(400, response{Message: "can not saved file", Code: 400})
+        }
+
+        if music.MusicId == "" || music.MusicName == ""{
             return c.JSON(400, response{Message: "music data is not enough", Code:400})
         }
+
+        music.Content = p+"/assets/music/picture/"+userid+"/"+music.MusicName
+
         db.NewRecord(music)
         db.Create(&music)
         return c.JSON(200, response{Message: "successful music create",Code:200})
