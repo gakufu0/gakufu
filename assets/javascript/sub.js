@@ -13,3 +13,12 @@ function buildXHR(method, type=null ,header = null, url, sendData = null, onload
 
     return xhr;
 }
+
+function loadFile(event){
+    var reader = new FileReader();
+    reader.onload = function(){
+        var loadImage = document.getElementById("loadImage");
+        loadImage.src = reader.result;
+    }
+    reader.readAsDataURL(event.target.files[0]);
+}

@@ -13,7 +13,6 @@ import (
 )
 
 func saveFile(path string, c echo.Context) error {
-    logrus.Warn(c)
     file, err := c.FormFile("file")
     if err != nil {
         logrus.Warn("a")
@@ -68,11 +67,22 @@ func main(){
     e := echo.New()
     e.Static("/", "assets")
 
-    e.GET("/",func (c echo.Context) error{
+    e.GET("/music/picture/:userid/:imageName",func (c echo.Context) error{
+        userid := c.Param("userid")
+        imageName := c.Param("imageName")
+        logrus.Warn("./assets/music/picture/"+userid+imageName)
+        return c.File("./assets/music/picture/"+userid+"/"+imageName)
+    })
+
+    e.GET("/:userid",func (c echo.Context) error{
         return c.File("./public/index.html")
     })
 
-    e.GET("/music/new",func (c echo.Context) error{
+    e.GET("/:userid/post",func (c echo.Context) error{
+        return c.File("./public/postImage.html")
+    })
+
+    e.GET("/:userid/music/new",func (c echo.Context) error{
         var music []Music
         db.Limit(20).Find(&music)
         fmt.Printf("%v",music)
@@ -112,10 +122,10 @@ func main(){
         userid := c.Param("userid")
         music.CreateUser = userid
 
-        logrus.Warn(c)
-
         p,_ := os.Getwd()
-        err := saveFile(p+"/assets/music/picture/"+music.MusicName,c)
+        //TODO 毎回作るのは雑魚
+        os.Create(p+"/assets/music/picture/"+userid)
+        err := saveFile(p+"/assets/music/picture/" + userid + "/" + music.MusicName,c)
         if err != nil {
             return c.JSON(400, response{Message: "can not saved file", Code: 400})
         }
@@ -124,7 +134,7 @@ func main(){
             return c.JSON(400, response{Message: "music data is not enough", Code:400})
         }
 
-        music.Content = p+"/assets/music/picture/"+userid+"/"+music.MusicName
+        music.Content = "/" + userid + "/" + music.MusicName
 
         db.NewRecord(music)
         db.Create(&music)
