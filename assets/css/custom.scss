@@ -1,6 +1,7 @@
 #top{
     height:15%;
     padding:10px;
+    border-bottom:1px solid gray;
     img{
         margin-bottom:10px;
         height:100%;
@@ -66,18 +67,18 @@
         bottom:1px solid black;
     }
     .active{
-        background-color:black;    
+        background-color:black;
         .tab-link{
-            color:red;    
+            color:red;
         }
     }
 }
 
 .tab-item{
     &:hover{
-        background-color:black;    
+        background-color:black;
         .tab-link{
-            color:red;    
+            color:red;
         }
     }
     border:{
@@ -107,8 +108,13 @@
         border-radius:5px;
         float:left;
         margin:10px;
-        height:10%;
     }
+}
 
+#postImage{
+    float:right;
+    border:{
+        left:1px solid gray;
+    }
 }
 

@@ -1,12 +1,11 @@
 import requests
 
-url = "http://localhost:1323/create"
+url = "http://localhost:1323/mstn/music"
 
 data = {
-    "UserId" : "ueken",
-    "AccountName" : "test",
-    "Contet" : "aaaa"
+    "MusicId" : "ueken",
+    "MusicName" : "test",
+    "Content" : open("music_box.png","rb")
 }
-
 res = requests.post(url,data=data)
 print(res.text)

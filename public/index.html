@@ -15,10 +15,10 @@
 
 <body>
     <div class="row">
-        <section id="left" class="col-md-2 col-sd-2">
+        <section id="left" class="col-md-2 col-sm-2">
             <div class="row">
                 <section id="left-top">
-                    <img src="/picture/aaa.jpeg" class="col-md-4 col-sd-4">
+                    <img src="/picture/aaa.jpeg" class="col-md-4 col-sm-1">
                     <div>向野　君春<br/><br/><br/></div>
                 </section>
 
@@ -30,13 +30,14 @@
                 </section>
             </div>
         </section>
-        <section id="MainContents" class="col-md-10 col-sd-10">
+
+        <section id="MainContents" class="col-md-10 col-sm-10">
             <div class="row">
 
-                <section id="messageBox" class="col-md-8 col-sd-8 col-md-offset-1 col-md-offset-1">
+                <section id="messageBox" class="col-md-8 col-sm-10 col-md-offset-1 col-sm-offset-1">
                     <table class="table">
                       <tbody>
-                          <tr v-for="message in musics">
+                          <tr v-for="message of musics">
                             <td>
                               <div>{{message.id}}</div>
                             </td>
@@ -45,10 +46,10 @@
                     </table>
                 </section>
 
-                <div class="col-md-12 col-sd-12"><!--余白--><div>
+                <div class="col-md-12 col-sm-12"><!--余白--><div>
 
                 <section id="searchBox">
-                    <input type="text"class="col-md-3 col-sd-3 col-md-offset-8 col-md-offset-8">
+                    <input type="text"class="col-md-3 col-sm-3 col-md-offset-8 col-sm-offset-8">
                     <button class="btn button-default col-md-1 col-md-1">検索</button>
                 </section>
 
@@ -68,17 +69,18 @@
                 </section>
 
                 <section>
-                    <div v-for="(music,num) in musics">
-                        <div class="contents col-md-3 col-sd-3">
-                        {{music.id}}
+                    <div v-for="music of musics">
+                        <div class="contents col-md-3 col-sm-3" >
+                            <div class="row">
+                                <img v-bind:src="getImagePath(music.content)" class="col-md-12 col-sm-12" alt="can not found">
+                            </div>
                         </div>
                     </div>
                 </section>
             </div>
         </section>
 
-        <section id="bottom">
+        <section id="bottom" class="col-md-12 col-sm-12">
         </section>
     </div>
-
 </body>

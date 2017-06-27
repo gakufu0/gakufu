@@ -7,7 +7,42 @@ import (
     "github.com/jinzhu/gorm"
     _"github.com/mattn/go-sqlite3"
     _"html/template"
+    "os"
+    "io"
+    logrus "github.com/Sirupsen/logrus"
 )
+
+func saveFile(path string, c echo.Context) error {
+    file, err := c.FormFile("file")
+    if err != nil {
+        logrus.Warn("a")
+        return err
+    }
+
+    src, err := file.Open()
+    if err != nil {
+        logrus.Warn("b")
+        return err
+    }
+    defer src.Close()
+
+    if string(path[len(path)-1]) == string("/") {
+        path += file.Filename
+    }
+
+    dst, err := os.Create(path)
+    if err != nil {
+        logrus.Warn("c")
+        return err
+    }
+    defer dst.Close()
+
+    if _, err = io.Copy(dst, src); err != nil {
+        logrus.Warn("d")
+        return err
+    }
+    return nil
+}
 
 func main(){
 
@@ -32,11 +67,22 @@ func main(){
     e := echo.New()
     e.Static("/", "assets")
 
-    e.GET("/",func (c echo.Context) error{
+    e.GET("/music/picture/:userid/:imageName",func (c echo.Context) error{
+        userid := c.Param("userid")
+        imageName := c.Param("imageName")
+        logrus.Warn("./assets/music/picture/"+userid+imageName)
+        return c.File("./assets/music/picture/"+userid+"/"+imageName)
+    })
+
+    e.GET("/:userid",func (c echo.Context) error{
         return c.File("./public/index.html")
     })
 
-    e.GET("/music/new",func (c echo.Context) error{
+    e.GET("/:userid/post",func (c echo.Context) error{
+        return c.File("./public/postImage.html")
+    })
+
+    e.GET("/:userid/music/new",func (c echo.Context) error{
         var music []Music
         db.Limit(20).Find(&music)
         fmt.Printf("%v",music)
@@ -69,12 +115,27 @@ func main(){
 
     e.POST("/:userid/music",func (c echo.Context) error{
         music := new(Music)
-        c.Bind(music)
+
+        music.MusicId = c.FormValue("music_id")
+        music.MusicName = c.FormValue("music_name")
+
         userid := c.Param("userid")
         music.CreateUser = userid
-        if music.MusicId == "" || music.MusicName == "" || music.Content == ""{
+
+        p,_ := os.Getwd()
+        //TODO 毎回作るのは雑魚
+        os.Create(p+"/assets/music/picture/"+userid)
+        err := saveFile(p+"/assets/music/picture/" + userid + "/" + music.MusicName,c)
+        if err != nil {
+            return c.JSON(400, response{Message: "can not saved file", Code: 400})
+        }
+
+        if music.MusicId == "" || music.MusicName == ""{
             return c.JSON(400, response{Message: "music data is not enough", Code:400})
         }
+
+        music.Content = "/" + userid + "/" + music.MusicName
+
         db.NewRecord(music)
         db.Create(&music)
         return c.JSON(200, response{Message: "successful music create",Code:200})
