@@ -7,8 +7,7 @@
 
     <title>楽譜箱</title>
     <section  id="top">
-        <img src="/picture/image1.JPG">
-        <img src="/picture/image2.JPG">
+        <img src="/picture/title.jpg">
     </section>
 </head>
 
@@ -32,12 +31,10 @@
 
         <section id="postImage" class="col-md-10 col-sm-10">
             <img id="loadImage" class="col-md-5 col-sm-5" alt="your image"><br>
-            <form action="/test/music" method="post" enctype="multipart/form-data">
-                ID: <input type="text" name="music_name"><br>
-                Name: <input type="text" name="music_id"><br>
-                Files: <input type="file" name="file" accept="image/*" onchange="loadFile(event)"><br><br>
-                <input type="submit" value="Submit">
-            </form>
+            ID: <input id="inputId" type="text" name="music_name"><br>
+            Name: <input id="inputName" type="text" name="music_id"><br>
+            Files: <input id="inputImage" type="file" name="file" accept="image/*" onchange="loadFile(event)"><br><br>
+            <input type="submit" value="Submit" onclick="postImage()">
         </section>
     </div>
 </body>

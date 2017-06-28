@@ -15,13 +15,11 @@ import (
 func saveFile(path string, c echo.Context) error {
     file, err := c.FormFile("file")
     if err != nil {
-        logrus.Warn("a")
         return err
     }
 
     src, err := file.Open()
     if err != nil {
-        logrus.Warn("b")
         return err
     }
     defer src.Close()
@@ -32,13 +30,11 @@ func saveFile(path string, c echo.Context) error {
 
     dst, err := os.Create(path)
     if err != nil {
-        logrus.Warn("c")
         return err
     }
     defer dst.Close()
 
     if _, err = io.Copy(dst, src); err != nil {
-        logrus.Warn("d")
         return err
     }
     return nil
@@ -70,7 +66,6 @@ func main(){
     e.GET("/music/picture/:userid/:imageName",func (c echo.Context) error{
         userid := c.Param("userid")
         imageName := c.Param("imageName")
-        logrus.Warn("./assets/music/picture/"+userid+imageName)
         return c.File("./assets/music/picture/"+userid+"/"+imageName)
     })
 
@@ -116,12 +111,14 @@ func main(){
     e.POST("/:userid/music",func (c echo.Context) error{
         music := new(Music)
 
+        logrus.Warn("")
         music.MusicId = c.FormValue("music_id")
         music.MusicName = c.FormValue("music_name")
 
         userid := c.Param("userid")
         music.CreateUser = userid
 
+        logrus.Warn(userid)
         p,_ := os.Getwd()
         //TODO 毎回作るのは雑魚
         os.Create(p+"/assets/music/picture/"+userid)

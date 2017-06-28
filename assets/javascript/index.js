@@ -18,7 +18,7 @@ var mainContents = new Vue({
     methods:{
         getImagePath(image){
             return "music/picture" + image;
-        }
+        },
     }
 });
 

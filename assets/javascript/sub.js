@@ -22,3 +22,18 @@ function loadFile(event){
     }
     reader.readAsDataURL(event.target.files[0]);
 }
+
+function postImage(){
+    var formData = new FormData();
+    var id = document.getElementById("inputId").value;
+    var name = document.getElementById("inputName").value;
+    var image = document.getElementById("inputImage").files[0];
+    formData.append("music_name",name);
+    formData.append("music_id",id);
+    formData.append("file",image);
+
+    var request = new XMLHttpRequest();
+    request.open("POST", "http://192.168.2.104:1323/test/music");
+    request.send(formData);
+    request.onload=function(){console.log(this.responseText);}
+}

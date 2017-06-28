@@ -98,7 +98,8 @@
 }
 
 #postImage {
-  float: right;
+  float: left;
+  height: 100%;
   border-left: 1px solid gray;
 }
 
