@@ -73,10 +73,6 @@ func main(){
         return c.File("./public/index.html")
     })
 
-    e.GET("/:userid/post",func (c echo.Context) error{
-        return c.File("./public/postImage.html")
-    })
-
     e.GET("/:userid/music/new",func (c echo.Context) error{
         var music []Music
         db.Limit(20).Find(&music)
@@ -111,14 +107,14 @@ func main(){
     e.POST("/:userid/music",func (c echo.Context) error{
         music := new(Music)
 
-        logrus.Warn("")
-        music.MusicId = c.FormValue("music_id")
         music.MusicName = c.FormValue("music_name")
+        music.Description = c.FormValue("description")
+        music.Tags = c.FormValue("tags")
 
         userid := c.Param("userid")
         music.CreateUser = userid
 
-        logrus.Warn(userid)
+        logrus.Warn(music)
         p,_ := os.Getwd()
         //TODO 毎回作るのは雑魚
         os.Create(p+"/assets/music/picture/"+userid)
@@ -127,7 +123,7 @@ func main(){
             return c.JSON(400, response{Message: "can not saved file", Code: 400})
         }
 
-        if music.MusicId == "" || music.MusicName == ""{
+        if music.MusicName == ""{
             return c.JSON(400, response{Message: "music data is not enough", Code:400})
         }
 
@@ -171,6 +167,12 @@ func main(){
         return c.JSON(200, response{Message: "OK", Code: 200})
     })
 
+    e.POST("/:userid/music/search", func (c echo.Context) error{
+      s0 := c.QueryParam("s0")
+      s1 := c.QueryParam("s1")
+      logrus.Warn(s1)
+      return c.String(http.StatusOK, name)
+    })
     e.POST("/createuser",func (c echo.Context) error{
         user := new(User)
         c.Bind(user)

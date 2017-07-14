@@ -8,6 +8,12 @@
     }
 }
 
+#zoomImage{
+  width:100vw;
+  height:100vh;
+  position:absolute;
+  z-index:5;
+}
 #left{
     float:left;
     padding:10px;
@@ -22,19 +28,19 @@
     font:{
         size:20px;
     }
-    border-bottom:1px solid gray;
     padding-bottom:10px;
 }
 
 #left-bottom{
     padding:10px;
     .link{
-        padding:3px;
-        border:1px solid gray;
-        text-align:center;
-        &:hover{
-            background-color:gray;
-        }
+      cursor: pointer;
+      padding:3px;
+      border:1px solid gray;
+      text-align:center;
+      &:hover{
+        background-color:gray;
+      }
     }
 }
 
@@ -76,16 +82,17 @@
 
 .tab-item{
     &:hover{
-        background-color:black;
-        .tab-link{
-            color:red;
-        }
+      background-color:black;
+      .tab-link{
+        color:red;
+      }
+      cursor: pointer;
     }
     border:{
-        top:1px solid gray;
-        left:1px solid white;
-        right:1px solid white;
-        radius:8px 8px 0 0;
+      top:1px solid gray;
+      left:1px solid white;
+      right:1px solid white;
+      radius:8px 8px 0 0;
     }
     background-color:gray;
     text-align:center;
@@ -98,24 +105,27 @@
 
 
 #MainContents{
-    float:right;
-    border:{
-        left:1px solid gray;
-    }
-    .contents{
-        border:1px red solid;
-        border-top-width:10px;
-        border-radius:5px;
-        float:left;
-        margin:10px;
-    }
+  float:right;
+  border:{
+    left:1px solid gray;
+  }
+  .contents{
+    border:1px red solid;
+    border-top-width:10px;
+    border-radius:5px;
+    float:left;
+    margin:10px;
+  }
+  .music{
+    height:25%;
+  }
 }
 
 #postImage{
     float:left;
     height:100%;
-    border:{
-        left:1px solid gray;
-    }
+}
+#loadImage{
+  height:50%;
 }
 

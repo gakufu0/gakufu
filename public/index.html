@@ -1,85 +1,102 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-    <script src="javascript/bootstrap-native.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/custom.css">
-    <script src="javascript/vue.js"></script>
-    <script src="javascript/sub.js"></script>
-    <script src="javascript/index.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+  <script src="javascript/bootstrap-native.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/custom.css">
+  <script src="javascript/vue.js"></script>
+  <script src="javascript/sub.js"></script>
+  <script src="javascript/index.js"></script>
 
-    <title>楽譜箱</title>
-    <section  id="top">
-        <img src="/picture/title.jpg">
-    </section>
+  <title>楽譜箱</title>
+  <section id="top">
+    <img src="/picture/title.jpg">
+  </section>
 </head>
 
 <body>
-    <div class="row">
-        <section id="left" class="col-md-2 col-sm-2">
-            <div class="row">
-                <section id="left-top">
-                    <img src="/picture/aaa.jpeg" class="col-md-4 col-sm-1">
-                    <div>向野　君春<br/><br/><br/></div>
-                </section>
+  <div id="contentsWrapper">
+    <img id="zoomImage" v-show="zoomed">
+    <div class="row" v-show="!zoomed">
+      <section id="left" class="col-md-2 col-sm-2">
+        <div class="row">
+          <section id="left-top">
+            <img src="/picture/aaa.jpeg" class="col-md-4 col-sm-1">
+            <div>向野　君春</div>
+            <hr>
+          </section>
 
-                <section id="left-bottom">
-                    <div class="link" href="#">ホーム</div>
-                    <div class="link" href="#">急上昇</div>
-                    <div class="link" href="#">登録チャンネル</div>
-                    <div class="link" href="#">履歴</div>
-                </section>
+          <section id="left-bottom">
+            <div class="link" href="#">ホーム</div>
+            <div class="link" href="#">急上昇</div>
+            <div class="link" href="#">登録チャンネル</div>
+            <div class="link" href="#">履歴</div>
+            <hr>
+            <div class="link" href="#" v-on:click="postMode()">投稿</div>
+          </section>
+        </div>
+      </section>
+
+      <section id="MainContents" class="col-md-10 col-sm-10">
+        <div class="row">
+
+          <section id="messageBox" class="col-md-8 col-sm-10 col-md-offset-1 col-sm-offset-1">
+            <table class="table">
+              <tbody>
+                <tr v-for="message of musics">
+                  <td>
+                    <div>{{message.id}}</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <div class="col-md-12 col-sm-12"><!--余白--></div>
+
+          <section id="searchBox">
+            <input id="searchData" type="text"class="col-md-3 col-sm-3 col-md-offset-8 col-sm-offset-8">
+            <button class="btn button-default col-md-1 col-md-1"v-on:click="searchWord()">検索</button>
+          </section>
+
+          <section id="tab" class="col-md-12 col-sd-12">
+            <div class="tab-item col-md-1 col-sd-1">
+              <div class="tab-link">ホーム</div>
             </div>
-        </section>
-
-        <section id="MainContents" class="col-md-10 col-sm-10">
-            <div class="row">
-
-                <section id="messageBox" class="col-md-8 col-sm-10 col-md-offset-1 col-sm-offset-1">
-                    <table class="table">
-                      <tbody>
-                          <tr v-for="message of musics">
-                            <td>
-                              <div>{{message.id}}</div>
-                            </td>
-                          </tr>
-                      </tbody>
-                    </table>
-                </section>
-
-                <div class="col-md-12 col-sm-12"><!--余白--><div>
-
-                <section id="searchBox">
-                    <input type="text"class="col-md-3 col-sm-3 col-md-offset-8 col-sm-offset-8">
-                    <button class="btn button-default col-md-1 col-md-1">検索</button>
-                </section>
-
-                <section id="tab" class="col-md-12 col-sd-12">
-                    <div class="tab-item col-md-1 col-sd-1">
-                      <div class="tab-link">ホーム</div>
-                    </div>
-                    <div class="tab-item col-md-1 col-sd-1">
-                      <div class="tab-link">急上昇</div>
-                    </div>
-                    <div class="tab-item col-md-1 col-sd-1">
-                      <div class="tab-link">登録済み</div>
-                    </div>
-                    <div class="tab-item col-md-1 col-sd-1">
-                      <div class="tab-link">履歴</div>
-                    </div>
-                </section>
-
-                <section>
-                    <div v-for="music of musics">
-                        <div class="contents col-md-3 col-sm-3" >
-                            <div class="row">
-                                <img v-bind:src="getImagePath(music.content)" class="col-md-12 col-sm-12" alt="can not found">
-                            </div>
-                        </div>
-                    </div>
-                </section>
+            <div class="tab-item col-md-1 col-sd-1">
+              <div class="tab-link">急上昇</div>
             </div>
-        </section>
+            <div class="tab-item col-md-1 col-sd-1">
+              <div class="tab-link">登録済み</div>
+            </div>
+            <div class="tab-item col-md-1 col-sd-1">
+              <div class="tab-link">履歴</div>
+            </div>
+          </section>
 
-        <section id="bottom" class="col-md-12 col-sm-12">
-        </section>
+          <section v-if="!post_mode">
+            <div v-for="music of musics">
+              <div class="contents col-md-3 col-sm-3" v-on:click="zoom(music)">
+                <div class="row">
+                  <img v-bind:id="music.id" v-bind:src="getImagePath(music.content)" class="col-md-12 col-sm-12 music" alt="can not found">
+                  <div class="musicName">楽譜名:{{sentenceAdju(music.music_name,15)}}<div>
+                  <div class="createdBy">投稿者:{{sentenceAdju(music.create_user,15)}}<div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="postImage" class="col-md-10 col-sm-10" v-if="post_mode">
+            <img id="loadImage" class="col-md-5 col-sm-5" alt="your image"><br>
+            <input id="inputName" type="text" name="music_id" placeholder="楽譜名" class="col-md-5 col-sm-5"><br>
+            <textarea id="description" name="" placeholder="説明" class="col-md-7 col-sm-7"></textarea>
+            <textarea id="musicTags" name="" placeholder="タグ" class="col-md-7 col-sm-7"></textarea>
+            <input id="inputImage" type="file" name="file" accept="image/*" onchange="loadFile(event)"><br><br>
+            <input type="submit" value="Submit" v-on:click="postImage()">
+          </section>
+        </div>
+      </section>
+
+      <section id="bottom" class="col-md-12 col-sm-12">
+      </section>
     </div>
+  </div>
 </body>
