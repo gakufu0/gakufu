@@ -70,17 +70,31 @@ func main(){
     })
 
     e.GET("/:userid",func (c echo.Context) error{
+        user := new(User)
+        userid := c.Param("userid")
+        //レコードがないときも0を返してエラーになってない
+        err := db.Where("user_id = ?",userid).First(&user).Error
+        fmt.Printf("%v",user)
+        if err != nil{
+          return c.File("./public/create_user.html")
+        }
         return c.File("./public/index.html")
     })
 
     e.GET("/:userid/music/new",func (c echo.Context) error{
         var music []Music
         db.Limit(20).Find(&music)
-        fmt.Printf("%v",music)
         return c.JSON(200,music)
     })
 
     e.GET("/:userid/notice", func (c echo.Context) error{
+        c_notice := new(Notice)
+        c_notice.Content = "test"
+        c_notice.UserId = c.Param("userid")
+
+        db.NewRecord(c_notice)
+        db.Create(&c_notice)
+
         userid := c.Param("userid")
 
         notice := new(Notice)
@@ -114,10 +128,10 @@ func main(){
         userid := c.Param("userid")
         music.CreateUser = userid
 
-        logrus.Warn(music)
+        logrus.Warn()
         p,_ := os.Getwd()
         //TODO 毎回作るのは雑魚
-        os.Create(p+"/assets/music/picture/"+userid)
+        os.Mkdir(p+"/assets/music/picture/"+userid, 0777)
         err := saveFile(p+"/assets/music/picture/" + userid + "/" + music.MusicName,c)
         if err != nil {
             return c.JSON(400, response{Message: "can not saved file", Code: 400})
@@ -167,16 +181,9 @@ func main(){
         return c.JSON(200, response{Message: "OK", Code: 200})
     })
 
-    e.POST("/:userid/music/search", func (c echo.Context) error{
-      s0 := c.QueryParam("s0")
-      s1 := c.QueryParam("s1")
-      logrus.Warn(s1)
-      return c.String(http.StatusOK, name)
-    })
     e.POST("/createuser",func (c echo.Context) error{
         user := new(User)
         c.Bind(user)
-        //TODO 修正
         if user == nil {
             return c.JSON(400, response{Message: "user data is null", Code: 400})
         }

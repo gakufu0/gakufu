@@ -14,12 +14,15 @@
 
 <body>
   <div id="contentsWrapper">
-    <img id="zoomImage" v-show="zoomed">
+    <section>
+      <img id="zoomOutButton" v-show="zoomed" src="/picture/aaa.jpeg" v-on:click="zoomout()">
+      <img id="zoomImage" v-show="zoomed">
+    </section>
     <div class="row" v-show="!zoomed">
       <section id="left" class="col-md-2 col-sm-2">
         <div class="row">
           <section id="left-top">
-            <img src="/picture/aaa.jpeg" class="col-md-4 col-sm-1">
+            <img src="/picture/aaa.jpeg">
             <div>向野　君春</div>
             <hr>
           </section>
@@ -41,9 +44,9 @@
           <section id="messageBox" class="col-md-8 col-sm-10 col-md-offset-1 col-sm-offset-1">
             <table class="table">
               <tbody>
-                <tr v-for="message of musics">
+                <tr v-for="notice of notices">
                   <td>
-                    <div>{{message.id}}</div>
+                    <div>{{notice.content}}</div>
                   </td>
                 </tr>
               </tbody>

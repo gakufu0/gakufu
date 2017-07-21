@@ -42,7 +42,7 @@ type Notice struct{
   ID              uint    `gorm:"primary_key;"`
   UserId          string  `json:"user_id"`
   Content         string  `json:"content"`
-Unixtime        uint    `json:"unixtime"`
+  Unixtime        uint    `json:"unixtime"`
 }
 
 type Follow struct{

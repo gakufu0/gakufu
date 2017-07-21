@@ -4,6 +4,7 @@ var mainContents = new Vue({
   el:'#contentsWrapper',
   data:{
     musics:{},
+    notices:{},
     post_mode:false,
     zoomed:false
   },
@@ -11,6 +12,9 @@ var mainContents = new Vue({
     self=this;
     buildXHR("GET","json", { "Content-Type":"application/json" } ,window.location.href + "/music/new",null, function(ev){
       self.musics = this.response;
+    });
+    buildXHR("GET","json", { "Content-Type":"application/json" } ,window.location.href + "/notice",null, function(ev){
+      self.notices = this.response;
     });
   },
   methods:{
@@ -57,6 +61,11 @@ var mainContents = new Vue({
       var el = document.getElementById("zoomImage");
       el.src = self.getImagePath(music.content);
       self.zoomed = true;
+    },
+    zoomout:function(){
+      var el = document.getElementById("zoomImage");
+      el.src = "";
+      self.zoomed = false;
     }
   }
 });

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ユーザー登録</title>
+  <script src="javascript/sub.js"></script>
+</head>
+<body>
+  <h1>ユーザー登録</h1>
+  <div id="caution" style="display:none;">パスワードが一致しません</div>
+  <input type="text" maxlength="20" id="userid" placeholder="ユーザー名" style="margin-top:35px; margin-left:100px;"><br>
+  <input type="text" maxlength="20" id="password" placeholder="パスワード" style="margin-left:100px;"><br>
+  <input type="text" maxlength="20" id="repassword" placeholder="再入力" style="margin-left:100px;"><br>
+  <input type="submit" value="登録" style="margin-left:300px; margin-top:30px;" onclick="createUser()">
+</body>
+</html>
