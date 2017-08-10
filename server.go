@@ -3,6 +3,7 @@ package main
 import (
     "fmt"
     _"net/http"
+    "net"
     "github.com/labstack/echo"
     "github.com/jinzhu/gorm"
     _"github.com/mattn/go-sqlite3"
@@ -27,7 +28,6 @@ func saveFile(path string, c echo.Context) error {
     if string(path[len(path)-1]) == string("/") {
         path += file.Filename
     }
-
     dst, err := os.Create(path)
     if err != nil {
         return err
@@ -69,15 +69,22 @@ func main(){
         return c.File("./assets/music/picture/"+userid+"/"+imageName)
     })
 
+    e.GET("/",func (c echo.Context) error{
+      return c.File("./public/create_user.html")
+    })
     e.GET("/:userid",func (c echo.Context) error{
         user := new(User)
         userid := c.Param("userid")
         //レコードがないときも0を返してエラーになってない
-        err := db.Where("user_id = ?",userid).First(&user).Error
-        fmt.Printf("%v",user)
-        if err != nil{
+        if userid == "favicon.ico" {
+          return nil
+        }
+        if err := db.Where("user_id = ?",userid).First(&user).Error; err != nil{
+          fmt.Printf("%v",err)
+          fmt.Printf("aaaaaa")
           return c.File("./public/create_user.html")
         }
+        fmt.Printf("aaa")
         return c.File("./public/index.html")
     })
 
@@ -88,16 +95,9 @@ func main(){
     })
 
     e.GET("/:userid/notice", func (c echo.Context) error{
-        c_notice := new(Notice)
-        c_notice.Content = "test"
-        c_notice.UserId = c.Param("userid")
-
-        db.NewRecord(c_notice)
-        db.Create(&c_notice)
-
         userid := c.Param("userid")
 
-        notice := new(Notice)
+        var notice []Notice
         db.Where("user_id = ?",userid).Limit(20).Find(&notice)
         return c.JSON(200, notice)
     })
@@ -214,14 +214,20 @@ func main(){
 
     e.POST("/:userid/fav", func (c echo.Context) error{
         fav := new(Favorite)
+        favorited := new(Favorite)
         c.Bind(fav)
+        fmt.Printf("aaaaaa")
+        fmt.Printf("%v",fav.MusicId)
 
-        userid := c.Param("userid")
-        fav.UserId = userid
+        if err := db.Where("music_id = ?",fav.MusicId).First(&favorited).Error; err != nil{
+          userid := c.Param("userid")
+          fav.UserId = userid
 
-        db.NewRecord(fav)
-        db.Create(&fav)
-        return c.JSON(200, response{Message: "successful favorite", Code:200})
+          db.NewRecord(fav)
+          db.Create(&fav)
+          return c.JSON(200, response{Message: "successful favorite", Code:200})
+        }
+        return c.JSON(400,response{Message: "this music is already favorited", Code:400})
     })
 
     e.POST("/:userid/history", func (c echo.Context) error{
@@ -237,8 +243,10 @@ func main(){
 
         db.NewRecord(history)
         db.Create(&history)
-        return c.JSON(200, response{Message: "successful favorite", Code:200})
+        return c.JSON(200, response{Message: "successfull", Code:200})
     })
 
+    addrs, err := net.InterfaceAddrs()
+    fmt.Println(addrs)
     e.Logger.Fatal(e.Start(":1323"))
 }

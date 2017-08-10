@@ -17,6 +17,7 @@
     <section>
       <img id="zoomOutButton" v-show="zoomed" src="/picture/aaa.jpeg" v-on:click="zoomout()">
       <img id="zoomImage" v-show="zoomed">
+      <button id="favbutton" v-show="zoomed" type="button" v-on:click="favorite">お気に入り</button>
     </section>
     <div class="row" v-show="!zoomed">
       <section id="left" class="col-md-2 col-sm-2">

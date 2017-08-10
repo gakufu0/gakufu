@@ -28,9 +28,14 @@ function createUser(){
   var password = document.getElementById("password").value;
   var repassword = document.getElementById("repassword").value;
   var caution = document.getElementById("caution").style.display;
-
+  if(userid == "" || password == "" || repassword == ""){
+    caution = "block";
+    console.log("test");
+    return;
+  }
   if(password != repassword){
     caution = "block";
+    return;
   }else{
     var obj = {
       "user_id":userid,

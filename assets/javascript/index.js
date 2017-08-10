@@ -35,7 +35,7 @@ var mainContents = new Vue({
       buildXHR("POST","", {},window.location.href + "/music",formData, function(ev){
       });
 
-      location.href = "http://localhost:1323/test";
+      location.href = location.href;
 
     },
     postMode:function(){
@@ -66,6 +66,14 @@ var mainContents = new Vue({
       var el = document.getElementById("zoomImage");
       el.src = "";
       self.zoomed = false;
+    },
+    favorite:function(){
+      var src = document.getElementById("zoomImage").src;
+      var data = {
+        "music_id":src
+      }
+      buildXHR("POST","json", { "Content-Type":"application/json" },window.location.href+"/fav",JSON.stringify(data), function(ev){
+      });
     }
   }
 });
