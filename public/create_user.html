@@ -7,8 +7,11 @@
 </head>
 <body>
   <h1>ユーザー登録</h1>
-  <div id="caution" style="display:none;">パスワードが一致しません</div>
-  <input type="text" maxlength="20" id="userid" placeholder="ユーザー名" style="margin-top:35px; margin-left:100px;"><br>
+  <div id="caution_pw" style="display:none;">パスワードが一致しません</div>
+  <div id="caution_ne" style="display:none;">入力されていない欄が有ります</div>
+  <div id="caution_au" style="display:none;">すでに存在するユーザー名です</div>
+  <input type="text" maxlength="20" id="userid" placeholder="ユーザーID" style="margin-top:35px; margin-left:100px;"><br>
+  <input type="text" maxlength="20" id="account_name" placeholder="アカウント名" style="margin-left:100px;"><br>
   <input type="text" maxlength="20" id="password" placeholder="パスワード" style="margin-left:100px;"><br>
   <input type="text" maxlength="20" id="repassword" placeholder="再入力" style="margin-left:100px;"><br>
   <input type="submit" value="登録" style="margin-left:300px; margin-top:30px;" onclick="createUser()">

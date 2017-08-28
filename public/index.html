@@ -24,14 +24,14 @@
         <div class="row">
           <section id="left-top">
             <img src="/picture/aaa.jpeg">
-            <div>向野　君春</div>
+            <div>{{user.account_name}}</div>
             <hr>
           </section>
 
           <section id="left-bottom">
-            <div class="link" href="#">ホーム</div>
+            <div class="link" v-on:click="getMusicHome()">ホーム</div>
             <div class="link" href="#">急上昇</div>
-            <div class="link" href="#">登録チャンネル</div>
+            <div class="link" v-on:click="getFavorited()">お気に入り</div>
             <div class="link" href="#">履歴</div>
             <hr>
             <div class="link" href="#" v-on:click="postMode()">投稿</div>
@@ -63,13 +63,13 @@
 
           <section id="tab" class="col-md-12 col-sd-12">
             <div class="tab-item col-md-1 col-sd-1">
-              <div class="tab-link">ホーム</div>
+              <div class="tab-link" v-on:click="getMusicHome()">ホーム</div>
             </div>
             <div class="tab-item col-md-1 col-sd-1">
               <div class="tab-link">急上昇</div>
             </div>
             <div class="tab-item col-md-1 col-sd-1">
-              <div class="tab-link">登録済み</div>
+              <div class="tab-link" v-on:click="getFavorited()">お気に入り</div>
             </div>
             <div class="tab-item col-md-1 col-sd-1">
               <div class="tab-link">履歴</div>
@@ -80,7 +80,7 @@
             <div v-for="music of musics">
               <div class="contents col-md-3 col-sm-3" v-on:click="zoom(music)">
                 <div class="row">
-                  <img v-bind:id="music.id" v-bind:src="getImagePath(music.content)" class="col-md-12 col-sm-12 music" alt="can not found">
+                  <img v-bind:id="music.id" v-bind:src="getImagePath(music.music_id)" class="col-md-12 col-sm-12 music" alt="can not found">
                   <div class="musicName">楽譜名:{{sentenceAdju(music.music_name,15)}}<div>
                   <div class="createdBy">投稿者:{{sentenceAdju(music.create_user,15)}}<div>
                 </div>

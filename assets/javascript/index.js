@@ -3,6 +3,7 @@ window.onload = function () {
 var mainContents = new Vue({
   el:'#contentsWrapper',
   data:{
+    user:{},
     musics:{},
     notices:{},
     post_mode:false,
@@ -10,6 +11,9 @@ var mainContents = new Vue({
   },
   beforeCreate:function(){
     self=this;
+    buildXHR("GET","json", { "Content-Type":"application/json" } ,window.location.href + "/getUser",null, function(ev){
+      self.user = this.response;
+    });
     buildXHR("GET","json", { "Content-Type":"application/json" } ,window.location.href + "/music/new",null, function(ev){
       self.musics = this.response;
     });
@@ -46,20 +50,10 @@ var mainContents = new Vue({
       return sentence.slice(0,max_length);
     },
     searchWord:function(){
-      var words = document.getElementById("searchData").value;
-      words=words.replace(/　/g,"&");
-      words=words.replace(/ /g,"&");
-      var data = words.split("&");
-      for( var i=0; i<data.length;i++){
-        words=words.replace(data[i],"s"+i+"="+data[i]);
-      }
-      buildXHR("GET","json", { "Content-Type":"application/json" } ,window.location.href + "/music/search?"+words,null, function(ev){
-        self.musics=this.response;
-      });
     },
     zoom:function(music){
       var el = document.getElementById("zoomImage");
-      el.src = self.getImagePath(music.content);
+      el.src = self.getImagePath(music.music_id);
       self.zoomed = true;
     },
     zoomout:function(){
@@ -68,14 +62,28 @@ var mainContents = new Vue({
       self.zoomed = false;
     },
     favorite:function(){
+
       var src = document.getElementById("zoomImage").src;
+      var splitData = src.split("/");
+      var id = "/" + splitData[splitData.length - 2] + "/" + splitData[splitData.length - 1]
       var data = {
-        "music_id":src
+        "music_id":id
       }
+      console.log(data)
       buildXHR("POST","json", { "Content-Type":"application/json" },window.location.href+"/fav",JSON.stringify(data), function(ev){
+      });
+    },
+    getFavorited:function(){
+      self = this;
+      buildXHR("GET","json", { "Content-Type":"application/json" },window.location.href+"/fav",null, function(ev){
+        self.musics = this.response;
+      });
+    },
+    getMusicHome:function(){
+      buildXHR("GET","json", { "Content-Type":"application/json" } ,window.location.href + "/music/new",null, function(ev){
+        self.musics = this.response;
       });
     }
   }
 });
-
 }

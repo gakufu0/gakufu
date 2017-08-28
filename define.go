@@ -7,66 +7,60 @@ import(
   _"net/http"
   "html/template"
   "github.com/labstack/echo"
+  _"github.com/jinzhu/gorm"
 )
 
 type Music struct{
-  ID              uint64      `json:"id" gorm:"primary_key`
-  MusicId         string      `json:"music_id"`
-  MusicName       string      `json:"music_name"`
-  Content         string      `json:"content"; gorm"size:256"`
-  Description     string      `json:"description"`
-  CreatedAt       time.Time   `json:"createdAt"`
-  CreateUser      string      `json:"create_user"`
-  Tags            string      `json:"tags"`
-  Views           uint64      `json:"views"`
-}
-
-type CreatingMusic struct{
-  ID              uint64 `json:"id" gorm:"primary_key`
-  MusicId         string `json:"music_id"`
-  MusicName       string `json:"music_name"`
-  Content         string `json:"content"`
-  Description     string `json:"description"`
-  CreateUser      string `json:"create_user"`
-  Tags            string `json:"tags"`
+  MusicId         string    `json:"music_id"`
+  MusicName       string    `json:"music_name"`
+  Content         string    `json:"content"; gorm"size:256"`
+  Description     string    `json:"description"`
+  CreatedAt       time.Time `json:"createdAt"`
+  CreateUser      string    `json:"create_user"`
+  Tags            string    `json:"tags"`
+  Views           uint64    `json:"views"`
+  Status          string    `json:"status"`
 }
 
 type User struct{
-  ID              uint64 `json:"id" gorm:"primary_key"`
   UserId          string `json:"user_id"`
   AccountName     string `json:"account_name"`
-  History         string `json:"history"`
+}
+
+type Password struct{
+  UserId          string `json:"user_id"`
+  Password        string `json:"password"`
 }
 
 type Notice struct{
-  ID              uint    `gorm:"primary_key;"`
   UserId          string  `json:"user_id"`
   Content         string  `json:"content"`
-  Unixtime        uint    `json:"unixtime"`
+  Unixtime        uint64  `json:"unixtime"`
 }
 
 type Follow struct{
-  ID              uint64 `json:"id" gorm:"primary_key"`
-  Follow          string `json:"follow"`
-  Follower        string `json:"follower"`
+  Follow          uint64 `json:"follow"`
+  Follower        uint64 `json:"follower"`
 }
 
 type Favorite struct{
-  ID              uint64 `json:"id" gorm:"primary_key"`
   UserId          string `json:"user_id"`
   MusicId         string `json:"music_id"`
 }
 
 type History struct{
-  ID              uint64  `json:"id" gorm:"primary_key"`
-  MusicId         string  `json:"music_id"`
+  MusicId         uint64  `json:"music_id"`
   UserId          string  `json:"user_id"`
-Unixtime        uint    `json:"unixtime" default:0`
+  Unixtime        uint64  `json:"unixtime" default:0`
 }
 
 type response struct {
   Code    int
   Message string
+}
+
+type MusicIdTemp struct{
+  MusicId string
 }
 
 func authentication(){

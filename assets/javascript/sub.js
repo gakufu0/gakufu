@@ -25,27 +25,34 @@ function loadFile(event){
 
 function createUser(){
   var userid = document.getElementById("userid").value;
+  var accountName = document.getElementById("account_name").value;
   var password = document.getElementById("password").value;
   var repassword = document.getElementById("repassword").value;
-  var caution = document.getElementById("caution").style.display;
-  if(userid == "" || password == "" || repassword == ""){
-    caution = "block";
-    console.log("test");
+  var cautionPassword = document.getElementById("caution_pw").style;
+  var cautionDataEnough = document.getElementById("caution_ne").style;
+  var cautionUserAlreadyUsed = document.getElementById("caution_au").style;
+
+  if(userid == "" || accountName == "" || password == "" || repassword == ""){
+    cautionDataEnough.display = "block";
     return;
   }
   if(password != repassword){
-    caution = "block";
+    cautionPassword.display = "block";
     return;
   }else{
     var obj = {
       "user_id":userid,
       "password":password,
-      "repassword":repassword
+      "account_name":accountName
     }
-    console.log(obj);
 
     self.buildXHR("POST","json", { "Content-Type":"application/json" },"http://localhost:1323/createuser",JSON.stringify(obj), function(ev){
-      location.href = "http://localhost:1323/"+userid;
+      var res=this.response;
+      if(res.Code == 200){
+        setInterval(function(){location.href = "http://localhost:1323/"+userid;},500);
+      }else{
+        cautionUserAlreadyUsed.display = "block";
+      }
     });
   }
 }
