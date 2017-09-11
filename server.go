@@ -46,7 +46,6 @@ func saveFile(path string, c echo.Context) error {
 func main(){
 
     rand.Seed(time.Now().UnixNano())
-
     db,err := gorm.Open("sqlite3","./database/dev.sqlite3")
     if err != nil {
         panic(err.Error())
@@ -74,17 +73,21 @@ func main(){
     })
 
     e.GET("/",func (c echo.Context) error{
+      return c.File("./public/authorization.html")
+    })
+
+    e.GET("/create",func (c echo.Context) error{
       return c.File("./public/create_user.html")
     })
+
     e.GET("/:userid",func (c echo.Context) error{
       user := new(User)
       userid := c.Param("userid")
-      //レコードがないときも0を返してエラーになってない
       if userid == "favicon.ico" {
         return nil
       }
       if err := db.Where("user_id = ?",userid).First(&user).Error; err != nil{
-        return c.File("./public/create_user.html")
+        return c.File("./public/authorization.html")
       }
       return c.File("./public/index.html")
       })
@@ -135,6 +138,17 @@ func main(){
       history := new(History)
       db.Where("user_id = ?",userid).Limit(20).Find(&history)
       return c.JSON(200, history)
+    })
+
+    e.POST("/auth",func (c echo.Context) error{
+      pass := new(User)
+      c.Bind(pass)
+      dbpass := new(User)
+      db.Where("user_id = ?",pass.UserId).First(&dbpass)
+      if pass.Password == dbpass.Password {
+        return c.JSON(200,response{Message:"OK",Code:200})
+      }
+      return c.JSON(400,response{Message:"NG",Code:400})
     })
 
     e.POST("/:userid/music",func (c echo.Context) error{
@@ -194,18 +208,19 @@ func main(){
 
     e.POST("/createuser",func (c echo.Context) error{
       user := new(User)
+
       c.Bind(user)
       if user == nil {
           return c.JSON(400, response{Message: "user data is null", Code: 400})
       }
 
       userDB := new(User)
-      fmt.Printf("%v",user.UserId)
       db.Where("user_id = ?",user.UserId).First(&userDB)
       if userDB.UserId != "" {
           return c.JSON(400, response{Message: "user_id already used", Code: 400})
       }
 
+      fmt.Printf("%v",user.Password)
       db.NewRecord(user)
       db.Create(&user)
       return c.JSON(200, response{Message: "successful user create", Code:200})

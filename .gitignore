@@ -1,1 +1,4 @@
 /assets/picture/*
+/assets/music/*
+*.swp
+./database/*

@@ -56,3 +56,29 @@ function createUser(){
     });
   }
 }
+
+function authUser(){
+  var userid = document.getElementById("userid").value;
+  var password = document.getElementById("password").value;
+  var cautionPassword = document.getElementById("caution_pw").style;
+  var cautionDataEnough = document.getElementById("caution_ne").style;
+
+  if(userid == "" || password == "" ){
+    cautionDataEnough.display = "block";
+    return;
+  }else{
+    var obj = {
+      "user_id":userid,
+      "password":password,
+    }
+
+    self.buildXHR("POST","json", { "Content-Type":"application/json" },"http://localhost:1323/auth",JSON.stringify(obj), function(ev){
+      var res=this.response;
+      if(res.Code == 200){
+        setInterval(function(){location.href = "http://localhost:1323/"+userid;},500);
+      }else{
+        cautionPassword.display = "block";
+      }
+    });
+  }
+}

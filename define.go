@@ -25,10 +25,6 @@ type Music struct{
 type User struct{
   UserId          string `json:"user_id"`
   AccountName     string `json:"account_name"`
-}
-
-type Password struct{
-  UserId          string `json:"user_id"`
   Password        string `json:"password"`
 }
 

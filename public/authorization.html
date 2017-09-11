@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ログイン</title>
+  <script src="javascript/sub.js"></script>
+</head>
+<body>
+  <h1>ログイン</h1>
+  <div id="caution_pw" style="display:none;">IDまたはパスワードが一致しません</div>
+  <div id="caution_ne" style="display:none;">入力されていない欄が有ります</div>
+  <input type="text" maxlength="20" id="userid" placeholder="ユーザーID" style="margin-top:35px; margin-left:100px;"><br>
+  <input type="text" maxlength="20" id="password" placeholder="パスワード" style="margin-left:100px;"><br>
+  <input type="submit" value="ログイン" style="margin-left:300px; margin-top:30px;" onclick="authUser()">
+
+  <br>
+
+  <a href="http://localhost:1323/create">AAA</a>
+</body>
+</html>
